@@ -45,8 +45,17 @@ export default function Home() {
 
   const handleDelete = async (id) => {
     if (confirm("ต้องการลบผู้ใช้นี้หรือไม่?")) {
-      await fetch(`/api/users/${id}`, { method: "DELETE" });
-      fetchUsers();
+      try {
+        const response = await fetch(`/api/users/${id}`, { method: "DELETE" });
+        const result = await response.json();
+        if (response.ok && result.deletedCount > 0) {
+          fetchUsers();
+        } else {
+          alert("ไม่สามารถลบผู้ใช้ได้");
+        }
+      } catch (error) {
+        alert("เกิดข้อผิดพลาด: " + error.message);
+      }
     }
   };
 
