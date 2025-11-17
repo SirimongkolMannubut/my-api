@@ -3,6 +3,10 @@ import { ObjectId } from "mongodb";
 
 export async function PUT(req, { params }) {
   try {
+    if (!params?.id) {
+      return Response.json({ error: "ID is required" }, { status: 400 });
+    }
+
     const body = await req.json();
     body.age = parseInt(body.age);
     body.updatedAt = new Date();
@@ -23,6 +27,10 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
   try {
+    if (!params?.id) {
+      return Response.json({ error: "ID is required" }, { status: 400 });
+    }
+
     const client = await clientPromise;
     const db = client.db("testdb");
 
